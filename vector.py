@@ -146,7 +146,7 @@ class Vector(object):
             return False
 
     def component_parallel_to(self, basis):
-        #The magnitude of v parrallel is equal to the dot product of v and the normalization of the basis vector 
+        #v parrallel to a basis is equal to the normalization of the basis vector times the scalar of the dot proudct of v and the normalized basis
         u = basis.normalization()
         return u.times_scalar((self.dot_product(u)))
 
@@ -167,7 +167,6 @@ class Vector(object):
         return self.cross_product(v).magnitude()
 
     def area_of_triangle(self ,v):
-
         return self.area_of_parallelogram(v) * .5
 
 
@@ -191,7 +190,6 @@ def main():
 
     vector7 = Vector(tuple([8.813, -1.331, -6.247]))
     print(vector7.magnitude())
-    print("7")
 
     vector8 = Vector(tuple([5.581,-2.136,]))
     print(vector8.normalization())
@@ -259,8 +257,10 @@ def main():
     vector36 = Vector(tuple([1.5, 9.547, 3.691]))
     vector37 = Vector(tuple([-6.007, 0.124, 5.772]))
     print(vector36.area_of_triangle(vector37))
-    
 
+
+
+    
 
 if __name__ == "__main__":
     main()
