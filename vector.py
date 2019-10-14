@@ -124,6 +124,9 @@ class Vector(object):
 
         return abs(self.dot_product(v)) < tolerance
 
+    def is_zero(self, tolerance=1e-10):
+        return self.magnitude() < tolerance
+        
     #Two vectors are parallel if 
     def is_parallel(self, v):
 
