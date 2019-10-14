@@ -23,17 +23,24 @@ class Line(object):
 
         self.set_basepoint()
 
-
+    #Two lines are parallel if their normal vectors are parallel
+    def is_parallel(self, v):
+        n1 = self.normal_vector
+        n2 = v.normal_vector
+        
+        return n1.is_parallel(n2)
+    
+    #Setting basepoint by setting an index to 0 (0, k/B) or (k/A, 0)
     def set_basepoint(self):
         try:
             n = self.normal_vector
             c = self.constant_term
-            basepoint_coords = ['0']*self.dimension
+            basepoint_coords = [0]*self.dimension
 
-            initial_index = Line.first_nonzero_index(n)
-            initial_coefficient = n[initial_index]
+            initial_index = Line.first_nonzero_index(n.coordinates)
+            initial_coefficient = n.coordinates[initial_index]
 
-            basepoint_coords[initial_index] = c/initial_coefficient
+            basepoint_coords[initial_index] = float(c)/initial_coefficient
             self.basepoint = Vector(basepoint_coords)
 
         except Exception as e:
@@ -42,35 +49,31 @@ class Line(object):
             else:
                 raise e
 
-    #Two lines are parallel if their normal vectors are parallel
-    def is_parallel(self, v):
-        if (self.normal_vector.is_parallel(v.normal_vector)):
-            return True
-        else:
-            return False
-
-    def is_equal(self, v):
+    def __eq__(self, v):
         #Two lines that are equal must be parallel
         if not self.is_parallel(v):
             return False
-        #Two lines are equal if the line between two 
-        else:
-            return True
+        #Two lines are equal if the line between two points is orthogonal to the normal vector
+        x0 = self.basepoint
+        y0 = v.basepoint
+        difference_between_points = x0.minus(y0)
+
+        return difference_between_points.is_orthogonal(self.normal_vector)
 
     def compute_intersection(self, v):
         if self.is_parallel(v):
             return None
         else:
             # X = (Dk1 - Bk2) / (AD - BC)
-            xNumerator = (v.normal_vector[1] * self.constant_term) - (self.normal_vector[1] * v.constant_term)
-            xDenominator = (self.normal_vector[0] * v.normal_vector[1]) - (self.normal_vector[1] * v.normal_vector[0])
-            x = xNumerator/xDenominator
+            x_numerator = (v.normal_vector.coordinates[1] * float(self.constant_term)) - (self.normal_vector.coordinates[1] * float(v.constant_term))
+            x_denominator = (self.normal_vector.coordinates[0] * v.normal_vector.coordinates[1]) - (self.normal_vector.coordinates[1] * v.normal_vector.coordinates[0])
+            x = x_numerator/x_denominator
 
             # Y = (-Ck1 + Ak2) / (AD - BC)
-            yNumerator = (-v.normal_vector[0] * self.constant_term) + (self.normal_vector[0] * v.constant_term)
-            yDenominator = (self.normal_vector[0] * v.normal_vector[1]) - (self.normal_vector[1] * v.normal_vector[0])
-            y = yNumerator/yDenominator
-            return([x,y])
+            y_numerator = (-v.normal_vector.coordinates[0] * float(self.constant_term)) + (self.normal_vector.coordinates[0] * float(v.constant_term))
+            y_denominator = (self.normal_vector.coordinates[0] * v.normal_vector.coordinates[1]) - (self.normal_vector.coordinates[1] * v.normal_vector.coordinates[0])
+            y = y_numerator/y_denominator
+            return(Vector([x,y]))
         
 
     def __str__(self):
@@ -133,23 +136,23 @@ class MyDecimal(Decimal):
 
 
 def main():
-    line1 = Line(Vector([4.046, 2.836]), 1.21)
-    line2 = Line(Vector([10.115, 7.09]), 3.025)
-    print('Same line = ' + line1.is_equal(line2))
-    print('Is parallel = ' + line1.is_parallel(line2))
-    print('Intersection = ' + line1.compute_intersection(line2))
+    line1 = Line(normal_vector=Vector([4.046, 2.836]), constant_term=1.21)
+    line2 = Line(normal_vector=Vector([10.115, 7.09]), constant_term=3.025)
+    print('Is parallel = ' + str(line1.is_parallel(line2)))
+    print('Same line = ' + str(line1 == line2))
+    print('Intersection = ' + str(line1.compute_intersection(line2)) + '\n')
 
-    line3 = Line(Vector([7.204, 3.182]), 8.68)
-    line4 = Line(Vector([8.172, 4.114]), 9.883)
-    print('Same line = ' + line3.is_equal(line4))
-    print('Is parallel = ' + line3.is_parallel(line4))
-    print('Intersection = ' + line3.compute_intersection(line4))
+    line3 = Line(normal_vector=Vector([7.204, 3.182]), constant_term=8.68)
+    line4 = Line(normal_vector=Vector([8.172, 4.114]), constant_term=9.883)
+    print('Is parallel = ' + str(line3.is_parallel(line4)))
+    print('Same line = ' + str(line3 == line4))
+    print('Intersection = ' + str(line3.compute_intersection(line4)) + '\n')
 
-    line5 = Line(Vector([1.182, 5.562]), 6.744)
-    line6 = Line(Vector([1.773, 8.343]), 9.525)
-    print('Same line = ' + line5.is_equal(line6))
-    print('Is parallel = ' + line5.is_parallel(line6))
-    print('Intersection = ' + line5.compute_intersection(line6))
+    line5 = Line(normal_vector=Vector([1.182, 5.562]), constant_term=6.744)
+    line6 = Line(normal_vector=Vector([1.773, 8.343]), constant_term=9.525)
+    print('Is parallel = ' + str(line5.is_parallel(line6)))
+    print('Same line = ' + str(line5 == line6))
+    print('Intersection = ' + str(line5.compute_intersection(line6)) + '\n')
 
 if __name__ == "__main__":
     main()
