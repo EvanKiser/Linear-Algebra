@@ -261,7 +261,7 @@ class Parametrization(object):
                 assert v.dimension == self.dimension
 
         except AssertionError:
-            raise Exception(BASEPT_AND_DIR_VECTORS_MUST_BE_IN_SAME_DIM_MSG)
+            raise Exception('The basepoint and direction vectors should all live in the same dimension')
 
 
 
