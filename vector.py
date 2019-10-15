@@ -102,10 +102,10 @@ class Vector(object):
 
         dotproduct = self.dot_product(v)
         if radians == True:
-            return math.acos(round(dotproduct/(self.magnitude() * v.magnitude()), 6))
+            return math.acos(round(float(dotproduct)/(self.magnitude() * v.magnitude()), 6))
 
         else:
-            return math.degrees(dotproduct/(self.magnitude() * v.magnitude()))
+            return math.degrees(float(dotproduct)/(self.magnitude() * v.magnitude()))
 
     #Two vectors are orthogonal if their dot_product is zero
     def is_orthogonal(self, v, tolerance=1e-10):
@@ -126,7 +126,7 @@ class Vector(object):
 
     def is_zero(self, tolerance=1e-10):
         return self.magnitude() < tolerance
-        
+
     #Two vectors are parallel if 
     def is_parallel(self, v):
 

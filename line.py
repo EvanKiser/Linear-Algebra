@@ -13,12 +13,12 @@ class Line(object):
         self.dimension = 2
 
         if not normal_vector:
-            all_zeros = ['0']*self.dimension
+            all_zeros = [0]*self.dimension
             normal_vector = Vector(all_zeros)
         self.normal_vector = normal_vector
 
         if not constant_term:
-            constant_term = Decimal('0')
+            constant_term = Decimal(0)
         self.constant_term = Decimal(constant_term)
 
         self.set_basepoint()
